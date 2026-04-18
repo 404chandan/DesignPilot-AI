@@ -53,9 +53,11 @@ The user has a new message for you:
 User: ${message}
 
 Instructions:
-1. Answer the user's question or address their request regarding the architecture.
-2. If the user's message implies they want to change the architecture (e.g., adding a feature, swapping a database, fixing a bottleneck), you MUST output the ENTIRE updated architecture in clean Markdown enclosed exactly within <NEW_ARCHITECTURE>...</NEW_ARCHITECTURE> tags at the end of your response. Include the mermaid diagrams in the updated architecture as well. ALWAYS wrap Mermaid node labels in double quotes (e.g., A["Label with (parentheses)"]) to avoid syntax errors.
-3. If they are just asking a question and not requesting a change, do NOT include the <NEW_ARCHITECTURE> tags.`;
+1. Answer the user's question or address their request briefly and professionally.
+2. If the user's message implies they want to change the architecture (e.g., adding a feature, swapping a database, fixing a bottleneck), you MUST output the ENTIRE updated architecture in clean Markdown enclosed exactly within <NEW_ARCHITECTURE>...</NEW_ARCHITECTURE> tags at the end of your response. 
+3. Include mermaid diagrams (flowcharts, mindmaps, workflows) whenever helpful or requested. ALWAYS wrap Mermaid node labels in double quotes (e.g., A["Label with (parentheses)"]) to avoid syntax errors.
+4. Keep your conversational response (outside the tags) very brief and to the point.
+5. If they are just asking a question and not requesting a change, do NOT include the <NEW_ARCHITECTURE> tags.`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;

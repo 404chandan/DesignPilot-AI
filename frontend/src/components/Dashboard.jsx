@@ -1,20 +1,25 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { LogOut, Terminal, Plus, Clock, FileText } from 'lucide-react';
+import { LogOut, Terminal, Plus, Clock, FileText, Code } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BlueprintDisplay from './BlueprintDisplay';
 import ArchitectureChat from './ArchitectureChat';
+import CodeWorkspace from './CodeWorkspace';
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const [blueprints, setBlueprints] = useState([]);
   const [selectedBlueprint, setSelectedBlueprint] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showWorkspace, setShowWorkspace] = useState(false);
   const navigate = useNavigate();
 
   // Helper to close modal
-  const closeModal = () => setSelectedBlueprint(null);
+  const closeModal = () => {
+    setSelectedBlueprint(null);
+    setShowWorkspace(false);
+  };
 
   const handleUpdateBlueprint = (updatedBlueprint) => {
     setSelectedBlueprint(updatedBlueprint);
@@ -110,7 +115,15 @@ const Dashboard = () => {
             
             {/* Left side: Blueprint Display */}
             <div style={{ flex: 2, overflowY: 'auto', padding: '60px 24px 24px 24px' }}>
-              <h2 style={{ color: 'var(--accent-color)', borderBottom: '1px solid #333', paddingBottom: '16px', marginBottom: '20px' }}>{selectedBlueprint.originalPrompt}</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #333', paddingBottom: '16px', marginBottom: '20px' }}>
+                <h2 style={{ color: 'var(--accent-color)', margin: 0 }}>{selectedBlueprint.originalPrompt}</h2>
+                <button 
+                  onClick={() => setShowWorkspace(true)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(0, 255, 204, 0.1)' }}
+                >
+                  <Code size={18} /> Open Code Workspace
+                </button>
+              </div>
               <div style={{ color: 'var(--text-primary)', textAlign: 'left' }}>
                 <BlueprintDisplay content={selectedBlueprint.generatedArchitecture} isGenerating={false} />
               </div>
@@ -126,6 +139,14 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Code Workspace Overlay */}
+      {showWorkspace && selectedBlueprint && (
+        <CodeWorkspace 
+          blueprint={selectedBlueprint} 
+          onClose={() => setShowWorkspace(false)} 
+        />
       )}
     </div>
   );
