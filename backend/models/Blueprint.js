@@ -17,6 +17,12 @@ const blueprintSchema = new mongoose.Schema({
   chatHistory: [{
     role: { type: String, enum: ['user', 'model'], required: true },
     text: { type: String, required: true }
+  }],
+  workspaceFiles: [{
+    name: { type: String, required: true },
+    path: { type: String, required: true },
+    language: { type: String, default: 'javascript' },
+    content: { type: String, default: '' }
   }]
 }, { timestamps: true });
 

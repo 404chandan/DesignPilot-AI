@@ -83,7 +83,8 @@ const Generator = () => {
       {showWorkspace && currentBlueprint && (
         <CodeWorkspace 
           blueprint={currentBlueprint} 
-          onClose={() => setShowWorkspace(false)} 
+          onClose={() => setShowWorkspace(false)}
+          onUpdateBlueprint={(updated) => setCurrentBlueprint(updated)}
         />
       )}
     </div>

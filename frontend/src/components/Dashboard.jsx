@@ -1,11 +1,12 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { LogOut, Terminal, Plus, Clock, FileText, Code } from 'lucide-react';
+import { LogOut, Terminal, Plus, Clock, FileText, Code, FileDown, Download } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BlueprintDisplay from './BlueprintDisplay';
 import ArchitectureChat from './ArchitectureChat';
 import CodeWorkspace from './CodeWorkspace';
+import { saveAs } from 'file-saver';
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -116,13 +117,25 @@ const Dashboard = () => {
             {/* Left side: Blueprint Display */}
             <div style={{ flex: 2, overflowY: 'auto', padding: '60px 24px 24px 24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #333', paddingBottom: '16px', marginBottom: '20px' }}>
-                <h2 style={{ color: 'var(--accent-color)', margin: 0 }}>{selectedBlueprint.originalPrompt}</h2>
-                <button 
-                  onClick={() => setShowWorkspace(true)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(0, 255, 204, 0.1)' }}
-                >
-                  <Code size={18} /> Open Code Workspace
-                </button>
+                <h2 style={{ color: 'var(--accent-color)', margin: 0, flex: 1 }}>{selectedBlueprint.originalPrompt}</h2>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    onClick={() => {
+                      const content = `# Architecture: ${selectedBlueprint.originalPrompt}\n\n${selectedBlueprint.generatedArchitecture}`;
+                      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+                      saveAs(blob, `${selectedBlueprint.originalPrompt.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '_')}_architecture.md`);
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(0, 255, 204, 0.1)' }}
+                  >
+                    <FileDown size={18} /> Export .md
+                  </button>
+                  <button 
+                    onClick={() => setShowWorkspace(true)}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(0, 255, 204, 0.1)' }}
+                  >
+                    <Code size={18} /> Code Workspace
+                  </button>
+                </div>
               </div>
               <div style={{ color: 'var(--text-primary)', textAlign: 'left' }}>
                 <BlueprintDisplay content={selectedBlueprint.generatedArchitecture} isGenerating={false} />
@@ -145,7 +158,8 @@ const Dashboard = () => {
       {showWorkspace && selectedBlueprint && (
         <CodeWorkspace 
           blueprint={selectedBlueprint} 
-          onClose={() => setShowWorkspace(false)} 
+          onClose={() => setShowWorkspace(false)}
+          onUpdateBlueprint={handleUpdateBlueprint}
         />
       )}
     </div>
