@@ -46,7 +46,7 @@ const ArchitectureChat = ({ blueprint, onUpdateBlueprint, userToken }) => {
           Authorization: `Bearer ${userToken}`
         }
       };
-      const { data } = await axios.post(`http://localhost:5000/api/blueprints/${blueprint._id}/chat`, { message: userMessage }, config);
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/blueprints/${blueprint._id}/chat`, { message: userMessage }, config);
       
       setMessages(data.chatHistory);
       

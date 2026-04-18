@@ -19,7 +19,7 @@ const Home = () => {
     <div className="home-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{ padding: '24px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 255, 204, 0.2)', background: 'rgba(10, 10, 10, 0.8)', backdropFilter: 'blur(10px)', position: 'sticky', top: 0, zIndex: 100 }}>
         <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Terminal size={28} color="#00ffcc" />
+          <img src="/logo.png" alt="Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
           <h1 className="glow-text" style={{ fontSize: '24px', margin: 0 }}>DesignPilot AI</h1>
         </div>
         <nav style={{ display: 'flex', gap: '16px' }}>

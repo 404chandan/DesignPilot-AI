@@ -23,7 +23,7 @@ const Generator = () => {
           Authorization: `Bearer ${user.token}`
         }
       };
-      const { data } = await axios.post('http://localhost:5000/api/generate-architecture', { brainDump }, config);
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/generate-architecture`, { brainDump }, config);
       setCurrentBlueprint(data.generatedArchitecture);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to generate architecture');
@@ -38,8 +38,8 @@ const Generator = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1 className="glow-text">
-          <Terminal size={24} color="#00ffcc" />
+        <h1 className="glow-text" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <img src="/logo.png" alt="Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
           DesignPilot AI Generator
         </h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

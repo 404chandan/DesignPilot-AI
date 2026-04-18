@@ -29,7 +29,7 @@ const Dashboard = () => {
             Authorization: `Bearer ${user.token}`
           }
         };
-        const { data } = await axios.get('http://localhost:5000/api/blueprints', config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/blueprints`, config);
         setBlueprints(data);
       } catch (err) {
         console.error('Failed to fetch blueprints', err);
@@ -46,8 +46,8 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1 className="glow-text">
-          <Terminal size={24} color="#00ffcc" />
+        <h1 className="glow-text" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <img src="/logo.png" alt="Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
           DesignPilot AI Dashboard
         </h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
