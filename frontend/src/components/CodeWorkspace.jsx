@@ -26,7 +26,7 @@ const ResizeHandle = ({ direction = 'vertical' }) => (
 
 const CodeWorkspace = ({ blueprint, onClose }) => {
   const [files, setFiles] = useState([
-    { id: '1', name: 'App.js', language: 'javascript', content: `// System Architecture Implementation
+    { id: '1', name: 'App.js', path: 'src/App.js', language: 'javascript', content: `// System Architecture Implementation
 // Based on: ${blueprint.originalPrompt}
 
 console.log("Initializing ${blueprint.originalPrompt}...");
@@ -41,7 +41,7 @@ function Main() {
 }
 
 export default Main;` },
-    { id: '2', name: 'styles.css', language: 'css', content: `body {
+    { id: '2', name: 'styles.css', path: 'src/styles.css', language: 'css', content: `body {
   background-color: #0a0a0a;
   color: #fff;
   font-family: sans-serif;
@@ -51,7 +51,7 @@ export default Main;` },
   padding: 2rem;
   text-align: center;
 }` },
-    { id: '3', name: 'package.json', language: 'json', content: `{
+    { id: '3', name: 'package.json', path: 'package.json', language: 'json', content: `{
   "name": "project",
   "version": "1.0.0",
   "dependencies": {
@@ -104,7 +104,7 @@ export default Main;` },
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ color: 'var(--accent-color)' }}><FileCode size={20} /></div>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', fontWeight: 'bold' }}>
-            {blueprint.originalPrompt.substring(0, 30)}... / <span style={{ color: '#888' }}>Workspace</span>
+            {blueprint.originalPrompt.substring(0, 30)}... / <span style={{ color: '#888' }}>Workspace / {activeFile?.path || activeFile?.name}</span>
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -163,7 +163,7 @@ export default Main;` },
                       marginBottom: '2px'
                     }}
                   >
-                    <File size={14} /> {file.name}
+                    <File size={14} /> {file.path || file.name}
                   </div>
                 ))}
               </div>
@@ -205,6 +205,7 @@ export default Main;` },
                   <Editor
                     height="100%"
                     theme="vs-dark"
+                    path={activeFile?.path || activeFile?.name}
                     language={activeFile?.language || 'javascript'}
                     value={activeFile?.content || ''}
                     onChange={handleEditorChange}
