@@ -2,13 +2,15 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import BrainDumpInput from './BrainDumpInput';
 import BlueprintDisplay from './BlueprintDisplay';
-import { LogOut, Terminal, ArrowLeft } from 'lucide-react';
+import { LogOut, Terminal, ArrowLeft, Code } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CodeWorkspace from './CodeWorkspace';
 
 const Generator = () => {
   const { user, logout } = useContext(AuthContext);
   const [currentBlueprint, setCurrentBlueprint] = useState(null);
+  const [showWorkspace, setShowWorkspace] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const Generator = () => {
         }
       };
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/generate-architecture`, { brainDump }, config);
-      setCurrentBlueprint(data.generatedArchitecture);
+      setCurrentBlueprint(data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to generate architecture');
       if (err.response && err.response.status === 401) {
@@ -62,10 +64,28 @@ const Generator = () => {
           {error && <div style={{ color: '#ff3333', marginTop: '16px', fontFamily: 'var(--font-mono)', fontSize: '14px' }}>[ERROR]: {error}</div>}
         </div>
         <div className="panel">
-          <div className="panel-title">// OUTPUT_NODE: BLUEPRINT</div>
-          <BlueprintDisplay content={currentBlueprint} isGenerating={isGenerating} />
+          <div className="panel-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            // OUTPUT_NODE: BLUEPRINT
+            {currentBlueprint && (
+              <button 
+                onClick={() => setShowWorkspace(true)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 12px', background: 'rgba(0, 255, 204, 0.1)' }}
+              >
+                <Code size={16} /> Open Code Workspace
+              </button>
+            )}
+          </div>
+          <BlueprintDisplay content={currentBlueprint?.generatedArchitecture} isGenerating={isGenerating} />
         </div>
       </main>
+
+      {/* Code Workspace Overlay */}
+      {showWorkspace && currentBlueprint && (
+        <CodeWorkspace 
+          blueprint={currentBlueprint} 
+          onClose={() => setShowWorkspace(false)} 
+        />
+      )}
     </div>
   );
 };
