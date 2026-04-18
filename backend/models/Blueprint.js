@@ -13,7 +13,11 @@ const blueprintSchema = new mongoose.Schema({
   generatedArchitecture: {
     type: String,
     required: true,
-  }
+  },
+  chatHistory: [{
+    role: { type: String, enum: ['user', 'model'], required: true },
+    text: { type: String, required: true }
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Blueprint', blueprintSchema);

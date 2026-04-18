@@ -17,10 +17,12 @@ router.post('/', protect, async (req, res) => {
 
     // Initialize Gemini API
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    const systemPrompt = `You are an expert System Design Architect. The user will provide a disorganized idea for a software application. Your job is to organize it into a structured, step-by-step technical blueprint. You must specifically highlight the optimal data flow, suggest appropriate networking protocols (like HTTP vs. WebSockets, or TCP/IP considerations), and identify at least two potential scaling bottlenecks. Output the response in clean Markdown.`;
-    
+    const systemPrompt = `You are an expert System Design Architect. The user will provide a disorganized idea for a software application. Your job is to organize it into a structured, step-by-step technical blueprint. You must specifically highlight the optimal data flow, suggest appropriate networking protocols (like HTTP vs. WebSockets, or TCP/IP considerations), and identify at least two potential scaling bottlenecks.
+
+IMPORTANT: You MUST include at least one \`\`\`mermaid\`\`\` code block containing a flowchart or mind map visualizing the architecture. ALWAYS wrap node labels in double quotes to avoid syntax errors (e.g., A["Label with (parentheses)"]). The diagram must be clean and syntactically correct. Output the entire response in clean Markdown.`;
+
     const prompt = `${systemPrompt}\n\nUser Idea:\n${brainDump}`;
 
     const result = await model.generateContent(prompt);
