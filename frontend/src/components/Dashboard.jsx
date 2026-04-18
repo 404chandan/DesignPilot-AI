@@ -104,10 +104,10 @@ const Dashboard = () => {
 
       {/* Modal for viewing full architecture */}
       {selectedBlueprint && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '40px' }}>
-          <div className="panel" style={{ width: '100%', maxWidth: '1400px', height: '90vh', background: 'var(--bg-color)', position: 'relative', border: '1px solid var(--accent-color)', display: 'flex', flexDirection: 'row', padding: 0, overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '10px' }}>
+          <div className="panel split-modal" style={{ width: '100%', maxWidth: '1400px', height: '90vh', background: 'var(--bg-color)', position: 'relative', border: '1px solid var(--accent-color)', display: 'flex', flexDirection: 'row', padding: 0, overflow: 'hidden' }}>
             <button onClick={closeModal} style={{ position: 'absolute', top: '16px', left: '16px', background: 'rgba(0,0,0,0.5)', border: '1px solid var(--accent-color)', borderRadius: '4px', padding: '4px 12px', color: 'var(--accent-color)', fontSize: '14px', cursor: 'pointer', zIndex: 20 }}>Close View</button>
-
+            
             {/* Left side: Blueprint Display */}
             <div style={{ flex: 2, overflowY: 'auto', padding: '60px 24px 24px 24px' }}>
               <h2 style={{ color: 'var(--accent-color)', borderBottom: '1px solid #333', paddingBottom: '16px', marginBottom: '20px' }}>{selectedBlueprint.originalPrompt}</h2>
@@ -117,11 +117,11 @@ const Dashboard = () => {
             </div>
 
             {/* Right side: Chat */}
-            <div style={{ flex: 1, minWidth: '350px', background: 'rgba(0,0,0,0.2)' }}>
-              <ArchitectureChat
-                blueprint={selectedBlueprint}
-                onUpdateBlueprint={handleUpdateBlueprint}
-                userToken={user.token}
+            <div className="chat-sidebar" style={{ flex: 1, minWidth: '350px', background: 'rgba(0,0,0,0.2)' }}>
+              <ArchitectureChat 
+                blueprint={selectedBlueprint} 
+                onUpdateBlueprint={handleUpdateBlueprint} 
+                userToken={user.token} 
               />
             </div>
           </div>
