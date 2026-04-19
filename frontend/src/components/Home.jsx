@@ -32,7 +32,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div className="home-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
       {/* Background Effects */}
       <div className="bg-glow-1"></div>
       <div className="bg-glow-2"></div>
@@ -44,7 +44,7 @@ const Home = () => {
         </motion.div>
         <motion.nav initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           {user ? (
-            <button onClick={() => navigate('/dashboard')} className="btn-primary">Dashboard <ArrowRight size={16}/></button>
+            <button onClick={() => navigate('/dashboard')} className="btn-primary">Dashboard <ArrowRight size={16} /></button>
           ) : (
             <>
               <button onClick={() => navigate('/login')} className="btn-ghost">Login</button>
@@ -55,40 +55,40 @@ const Home = () => {
       </header>
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}>
-        
+
         {/* HERO SECTION */}
         <section className="hero" style={{ padding: '120px 20px', textAlign: 'center', maxWidth: '1000px', display: 'flex', flexDirection: 'column', gap: '30px', alignItems: 'center', minHeight: '80vh', justifyContent: 'center' }}>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }} 
-            animate={{ opacity: 1, scale: 1 }} 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             className="badge glass-badge"
           >
             <Zap size={16} className="text-accent" /> Powered by Gemini 2.5 Pro
           </motion.div>
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             style={{ fontSize: '72px', lineHeight: 1.05, margin: 0, fontWeight: 800, letterSpacing: '-2px' }}
             className="hero-title"
           >
-            Architect Your Next <br/> <span className="text-gradient">Big Idea in Seconds.</span>
+            Architect Your Next <br /> <span className="text-gradient">Big Idea in Seconds.</span>
           </motion.h2>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             style={{ fontSize: '22px', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '800px' }}
           >
             Turn messy brain dumps into structured, scalable system architecture blueprints. Let AI map out your data flow, networking, and bottlenecks before you write a single line of code.
           </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             style={{ display: 'flex', gap: '20px', marginTop: '20px' }}
           >
@@ -102,7 +102,7 @@ const Home = () => {
         </section>
 
         {/* MOCKUP / VISUAL DEMO SECTION */}
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -111,9 +111,9 @@ const Home = () => {
         >
           <div className="glass-panel mockup-window" style={{ width: '100%', height: '400px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <div className="mockup-header" style={{ height: '40px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <div className="dot" style={{width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56'}}></div>
-              <div className="dot" style={{width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e'}}></div>
-              <div className="dot" style={{width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f'}}></div>
+              <div className="dot" style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56' }}></div>
+              <div className="dot" style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e' }}></div>
+              <div className="dot" style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f' }}></div>
               <div style={{ margin: '0 auto', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>designpilot-workspace.tsx</div>
             </div>
             <div className="mockup-body" style={{ flex: 1, display: 'flex', background: 'rgba(0,0,0,0.5)' }}>
@@ -124,14 +124,14 @@ const Home = () => {
               </div>
               <div className="mockup-code" style={{ padding: '24px', fontFamily: 'var(--font-mono)', fontSize: '14px', color: '#a9b7c6', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <motion.div initial={{ width: 0 }} whileInView={{ width: '100%' }} transition={{ duration: 1, delay: 0.5 }} style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                  <span style={{color: '#cc7832'}}>import</span> {'{'} Architecture {'}'} <span style={{color: '#cc7832'}}>from</span> <span style={{color: '#6a8759'}}>'@designpilot/core'</span>;
+                  <span style={{ color: '#cc7832' }}>import</span> {'{'} Architecture {'}'} <span style={{ color: '#cc7832' }}>from</span> <span style={{ color: '#6a8759' }}>'@designpilot/core'</span>;
                 </motion.div>
                 <motion.div initial={{ width: 0 }} whileInView={{ width: '100%' }} transition={{ duration: 1, delay: 1 }} style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                  <br/>
-                  <span style={{color: '#cc7832'}}>const</span> system = <span style={{color: '#cc7832'}}>new</span> Architecture();
+                  <br />
+                  <span style={{ color: '#cc7832' }}>const</span> system = <span style={{ color: '#cc7832' }}>new</span> Architecture();
                 </motion.div>
                 <motion.div initial={{ width: 0 }} whileInView={{ width: '100%' }} transition={{ duration: 1.5, delay: 1.5 }} style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                  <span style={{color: '#808080'}}>// Generating optimal microservices structure...</span>
+                  <span style={{ color: '#808080' }}>// Generating optimal microservices structure...</span>
                 </motion.div>
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.5, delay: 2.5 }} style={{ color: 'var(--accent-color)', marginTop: '16px' }}>
                   ✓ System blueprint successfully generated!
@@ -147,8 +147,8 @@ const Home = () => {
             <h2 style={{ fontSize: '40px', fontWeight: 700, marginBottom: '16px' }}>From Idea to Reality</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>A seamless workflow designed for visionary architects and developers.</p>
           </div>
-          
-          <motion.div 
+
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -188,7 +188,7 @@ const Home = () => {
             <p style={{ color: 'var(--text-secondary)', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>Everything you need to plan, design, and build world-class software.</p>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -202,7 +202,7 @@ const Home = () => {
               <h3 style={{ margin: 0, color: 'white', fontSize: '24px' }}>Instant Blueprints</h3>
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6, fontSize: '16px' }}>We generate complete markdown blueprints including UI components, database schemas, and API endpoints.</p>
             </motion.div>
-            
+
             <motion.div variants={fadeIn} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
               <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <Layers color="var(--accent-color)" size={28} />
@@ -210,7 +210,7 @@ const Home = () => {
               <h3 style={{ margin: 0, color: 'white', fontSize: '24px' }}>Interactive Workspace</h3>
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6, fontSize: '16px' }}>A fully-featured IDE experience right in your browser. Edit code, preview architecture, and manage files seamlessly.</p>
             </motion.div>
-            
+
             <motion.div variants={fadeIn} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
               <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <Shield color="var(--accent-color)" size={28} />
@@ -223,12 +223,12 @@ const Home = () => {
 
         {/* CTA SECTION */}
         <section style={{ width: '100%', padding: '100px 20px', display: 'flex', justifyContent: 'center' }}>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-panel" 
+            className="glass-panel"
             style={{ maxWidth: '1000px', width: '100%', padding: '60px', borderRadius: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden', border: '1px solid rgba(0, 255, 204, 0.3)' }}
           >
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at center, rgba(0, 255, 204, 0.1) 0%, transparent 70%)', zIndex: 0 }}></div>
@@ -242,7 +242,7 @@ const Home = () => {
           </motion.div>
         </section>
       </main>
-      
+
       <footer style={{ padding: '40px 20px', borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
