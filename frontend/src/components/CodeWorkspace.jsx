@@ -153,6 +153,106 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
     setActiveFileId(newFile.id);
   };
 
+  // ── Handle Terminal Commands ──
+  const handleTerminalCommand = (cmdStr) => {
+    const args = cmdStr.split(' ');
+    const command = args[0].toLowerCase();
+
+    setTimeout(() => {
+      switch (command) {
+        case 'clear':
+        case 'cls':
+          setTerminalOutput([]);
+          break;
+        case 'help':
+          setTerminalOutput(prev => [...prev, 
+            { type: 'info', text: 'Available commands: clear, ls, cat <file>, npm start, help' }
+          ]);
+          break;
+        case 'ls':
+        case 'dir':
+          const fileNames = files.map(f => f.name).join('  ');
+          setTerminalOutput(prev => [...prev, { type: 'info', text: fileNames }]);
+          break;
+        case 'cat':
+          if (args[1]) {
+            const file = files.find(f => f.name === args[1] || f.path === args[1]);
+            if (file) {
+              setTerminalOutput(prev => [...prev, { type: 'info', text: file.content }]);
+            } else {
+              setTerminalOutput(prev => [...prev, { type: 'error', text: `cat: ${args[1]}: No such file` }]);
+            }
+          } else {
+            setTerminalOutput(prev => [...prev, { type: 'error', text: 'cat: missing file operand' }]);
+          }
+          break;
+        case 'npm':
+          if (args[1] === 'start' || args[1] === 'run') {
+            setTerminalOutput(prev => [...prev, 
+              { type: 'info', text: '> react-scripts start' },
+              { type: 'success', text: 'Starting the development server...' },
+              { type: 'success', text: 'Compiled successfully!' }
+            ]);
+            // Force a re-render of the preview by generating a new file reference (simulating a refresh)
+            setFiles(prev => [...prev]);
+          } else {
+            setTerminalOutput(prev => [...prev, { type: 'error', text: `npm ERR! Unknown command: ${args[1]}` }]);
+          }
+          break;
+        default:
+          setTerminalOutput(prev => [...prev, { type: 'error', text: `Command not found: ${command}` }]);
+      }
+    }, 100);
+  };
+
+  // ── Helper: Generate Live Preview HTML ──
+  const generatePreviewHtml = () => {
+    const cssFile = files.find(f => f.name.endsWith('.css'))?.content || '';
+    const jsFile = files.find(f => f.name.endsWith('.js') || f.name.endsWith('.jsx'))?.content || '';
+
+    // Strip out imports and exports for standalone execution
+    let executableJs = jsFile
+      .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
+      .replace(/export\s+default\s+\w+;?/g, '')
+      .replace(/export\s+/g, '');
+
+    // Try to guess the main component name (fallback to 'Main' or 'App')
+    let mainComponent = 'Main';
+    const funcMatch = executableJs.match(/function\s+([A-Z]\w*)/);
+    const constMatch = executableJs.match(/const\s+([A-Z]\w*)\s*=\s*(?:=>|function|\()/);
+    if (funcMatch) mainComponent = funcMatch[1];
+    else if (constMatch) mainComponent = constMatch[1];
+    else if (executableJs.includes('App')) mainComponent = 'App';
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { font-family: sans-serif; background: #fff; color: #333; margin: 0; padding: 0; }
+            ${cssFile}
+          </style>
+          <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+          <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+          <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        </head>
+        <body>
+          <div id="root"></div>
+          <script type="text/babel">
+            ${executableJs}
+            
+            try {
+              const root = ReactDOM.createRoot(document.getElementById('root'));
+              root.render(<${mainComponent} />);
+            } catch(e) {
+              document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;font-family:monospace;">Error rendering preview:<br/>' + e.message + '</div>';
+            }
+          </script>
+        </body>
+      </html>
+    `;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }}
@@ -367,7 +467,9 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
                       placeholder="..."
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && e.target.value.trim()) {
-                          setTerminalOutput(prev => [...prev, { type: 'command', text: e.target.value }]);
+                          const cmd = e.target.value.trim();
+                          setTerminalOutput(prev => [...prev, { type: 'command', text: cmd }]);
+                          handleTerminalCommand(cmd);
                           e.target.value = '';
                         }
                       }}
@@ -414,33 +516,13 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
                  <Eye size={10} /> http://localhost:3000
                </div>
              </div>
-             <div style={{ paddingTop: '48px', color: '#000', height: '100%', overflowY: 'auto' }}>
-               <style dangerouslySetInnerHTML={{ __html: files.find(f => f.name.endsWith('.css'))?.content || '' }} />
-               <div style={{ padding: '24px' }}>
-                 <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                   <h2 style={{ margin: '0 0 12px 0', color: '#111' }}>Live Preview</h2>
-                   <p style={{ color: '#666', fontSize: '14px', marginBottom: '24px' }}>Preview updates as you edit your code.</p>
-                   
-                   {/* Show generated component list */}
-                   <div style={{ 
-                     margin: '0 auto', maxWidth: '400px', textAlign: 'left',
-                     border: '1px solid #e5e7eb', borderRadius: '12px', padding: '20px',
-                     background: '#fafafa'
-                   }}>
-                     <h4 style={{ margin: '0 0 12px 0', color: '#333', fontSize: '14px' }}>📁 Project Files ({files.length})</h4>
-                     {files.map(f => (
-                       <div key={f.id} style={{ 
-                         display: 'flex', alignItems: 'center', gap: '8px',
-                         padding: '6px 0', borderBottom: '1px solid #f0f0f0',
-                         fontSize: '13px', color: '#444'
-                       }}>
-                         <span style={{ color: '#a855f7' }}>📄</span> {f.path || f.name}
-                         <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#999' }}>{f.language}</span>
-                       </div>
-                     ))}
-                   </div>
-                 </div>
-               </div>
+             <div style={{ paddingTop: '36px', color: '#000', height: '100%', overflowY: 'auto' }}>
+               <iframe 
+                 srcDoc={generatePreviewHtml()} 
+                 style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
+                 title="Live Preview"
+                 sandbox="allow-scripts"
+               />
              </div>
           </Panel>
         </Group>

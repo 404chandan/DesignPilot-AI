@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Terminal, Cpu, Zap, Code, Shield, Layers, ArrowRight, Layout, Database } from 'lucide-react';
+import { Terminal, Cpu, Zap, Code, Shield, Layers, ArrowRight, Layout, Database, Star, Users, Server, Globe, Monitor, Smartphone, Briefcase, Activity, Clock } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -101,6 +101,30 @@ const Home = () => {
           </motion.div>
         </section>
 
+        {/* TECH STACK MARQUEE SECTION */}
+        <section style={{ width: '100%', padding: '40px 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '30px' }}>Powered by industry standard technologies</p>
+          <div className="marquee-container">
+            <div className="marquee-content">
+              <div className="marquee-item"><Database size={20} className="text-accent" /> MongoDB</div>
+              <div className="marquee-item"><Server size={20} className="text-accent" /> Express.js</div>
+              <div className="marquee-item"><Monitor size={20} className="text-accent" /> React</div>
+              <div className="marquee-item"><Globe size={20} className="text-accent" /> Node.js</div>
+              <div className="marquee-item"><Zap size={20} className="text-accent" /> Gemini AI</div>
+              <div className="marquee-item"><Smartphone size={20} className="text-accent" /> React Native</div>
+              <div className="marquee-item"><Briefcase size={20} className="text-accent" /> AWS</div>
+              {/* Duplicate for infinite effect */}
+              <div className="marquee-item"><Database size={20} className="text-accent" /> MongoDB</div>
+              <div className="marquee-item"><Server size={20} className="text-accent" /> Express.js</div>
+              <div className="marquee-item"><Monitor size={20} className="text-accent" /> React</div>
+              <div className="marquee-item"><Globe size={20} className="text-accent" /> Node.js</div>
+              <div className="marquee-item"><Zap size={20} className="text-accent" /> Gemini AI</div>
+              <div className="marquee-item"><Smartphone size={20} className="text-accent" /> React Native</div>
+              <div className="marquee-item"><Briefcase size={20} className="text-accent" /> AWS</div>
+            </div>
+          </div>
+        </section>
+
         {/* MOCKUP / VISUAL DEMO SECTION */}
         <motion.section
           initial="hidden"
@@ -155,7 +179,7 @@ const Home = () => {
             viewport={{ once: true, margin: "-50px" }}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}
           >
-            <motion.div variants={fadeIn} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
               <div className="step-icon-wrapper" style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>1</span>
               </div>
@@ -163,7 +187,7 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>Describe your app's purpose, features, and target audience in natural language. No technical jargon required.</p>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
               <div className="step-icon-wrapper" style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-color)' }}>2</span>
               </div>
@@ -171,7 +195,7 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>Gemini 2.5 Pro analyzes your idea and generates a comprehensive, scalable system blueprint in seconds.</p>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="step-card glass-panel" style={{ padding: '40px 30px', borderRadius: '16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
               <div className="step-icon-wrapper" style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>3</span>
               </div>
@@ -179,6 +203,27 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>Export your blueprint directly to functional React and Node.js code, ready to be deployed or customized.</p>
             </motion.div>
           </motion.div>
+        </section>
+
+        {/* STATS SECTION */}
+        <section style={{ width: '100%', maxWidth: '1000px', padding: '60px 20px', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="stat-card">
+              <Activity size={32} color="var(--accent-color)" style={{ marginBottom: '16px' }} />
+              <div className="stat-number">10k+</div>
+              <div className="stat-label">Blueprints Generated</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="stat-card">
+              <Clock size={32} color="var(--accent-color)" style={{ marginBottom: '16px' }} />
+              <div className="stat-number">500k</div>
+              <div className="stat-label">Hours Saved</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="stat-card">
+              <Users size={32} color="var(--accent-color)" style={{ marginBottom: '16px' }} />
+              <div className="stat-number">5,000+</div>
+              <div className="stat-label">Active Architects</div>
+            </motion.div>
+          </div>
         </section>
 
         {/* FEATURES SECTION */}
@@ -195,7 +240,7 @@ const Home = () => {
             viewport={{ once: true, margin: "-50px" }}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '30px' }}
           >
-            <motion.div variants={fadeIn} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
               <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <Cpu color="var(--accent-color)" size={28} />
               </div>
@@ -203,7 +248,7 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6, fontSize: '16px' }}>We generate complete markdown blueprints including UI components, database schemas, and API endpoints.</p>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
               <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <Layers color="var(--accent-color)" size={28} />
               </div>
@@ -211,12 +256,63 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6, fontSize: '16px' }}>A fully-featured IDE experience right in your browser. Edit code, preview architecture, and manage files seamlessly.</p>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
+            <motion.div variants={fadeIn} whileHover={{ scale: 1.02 }} className="feature-card glass-panel hover-glow" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', borderRadius: '16px' }}>
               <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 255, 204, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(0, 255, 204, 0.2)' }}>
                 <Shield color="var(--accent-color)" size={28} />
               </div>
               <h3 style={{ margin: 0, color: 'white', fontSize: '24px' }}>Scalability Insights</h3>
               <p style={{ color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6, fontSize: '16px' }}>Automatically identify potential bottlenecks and scalability solutions to ensure your architecture is production-ready.</p>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* TESTIMONIALS SECTION */}
+        <section style={{ width: '100%', maxWidth: '1200px', padding: '100px 20px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: '40px', fontWeight: 700, marginBottom: '16px' }}>Loved by Engineers</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>Don't just take our word for it. See what industry leaders are saying.</p>
+          </div>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}
+          >
+            <motion.div variants={fadeIn} whileHover={{ y: -10 }} className="testimonial-card glass-panel hover-glow">
+              <div style={{ display: 'flex', gap: '4px', color: '#ffbd2e' }}><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
+              <p style={{ color: 'var(--text-primary)', fontSize: '16px', lineHeight: 1.6, flex: 1 }}>"DesignPilot completely transformed how we plan our microservices. We went from weeks of whiteboarding to having a deployable blueprint in an afternoon."</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #00ffcc 0%, #00b3ff 100%)' }}></div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600 }}>Sarah Jenkins</h4>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Lead Architect @ TechFlow</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeIn} whileHover={{ y: -10 }} className="testimonial-card glass-panel hover-glow">
+              <div style={{ display: 'flex', gap: '4px', color: '#ffbd2e' }}><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
+              <p style={{ color: 'var(--text-primary)', fontSize: '16px', lineHeight: 1.6, flex: 1 }}>"The ability to dump a messy product requirement document and get a structured, scalable system architecture out the other end feels like magic."</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #ff5f56 0%, #ffbd2e 100%)' }}></div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600 }}>David Chen</h4>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>CTO @ StartupX</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeIn} whileHover={{ y: -10 }} className="testimonial-card glass-panel hover-glow">
+              <div style={{ display: 'flex', gap: '4px', color: '#ffbd2e' }}><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
+              <p style={{ color: 'var(--text-primary)', fontSize: '16px', lineHeight: 1.6, flex: 1 }}>"Not only does it generate the architecture, but it catches potential bottlenecks I hadn't even considered. It's like having a Staff Engineer on demand."</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #b027c9 0%, #00ffcc 100%)' }}></div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600 }}>Elena Rodriguez</h4>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Senior Backend Eng</span>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </section>
