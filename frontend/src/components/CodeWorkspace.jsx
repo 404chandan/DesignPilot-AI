@@ -46,6 +46,7 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
 
   const [files, setFiles] = useState(initialFiles);
   const [activeFileId, setActiveFileId] = useState(files[0]?.id || '1');
+  const [previewKey, setPreviewKey] = useState(0);
   const [terminalOutput, setTerminalOutput] = useState([
     { type: 'info', text: 'Workspace initialized.' },
     { type: 'success', text: 'Ready.' },
@@ -193,8 +194,8 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
               { type: 'success', text: 'Starting the development server...' },
               { type: 'success', text: 'Compiled successfully!' }
             ]);
-            // Force a re-render of the preview by generating a new file reference (simulating a refresh)
-            setFiles(prev => [...prev]);
+            // Force a re-render of the preview
+            setPreviewKey(prev => prev + 1);
           } else {
             setTerminalOutput(prev => [...prev, { type: 'error', text: `npm ERR! Unknown command: ${args[1]}` }]);
           }
@@ -207,16 +208,29 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
 
   // ── Helper: Generate Live Preview HTML ──
   const generatePreviewHtml = () => {
-    const cssFile = files.find(f => f.name.endsWith('.css'))?.content || '';
-    const jsFile = files.find(f => f.name.endsWith('.js') || f.name.endsWith('.jsx'))?.content || '';
+    const cssFiles = files.filter(f => f.name.endsWith('.css')).map(f => f.content).join('\n');
+    const jsFiles = files.filter(f => f.name.endsWith('.js') || f.name.endsWith('.jsx'));
+    
+    if (jsFiles.length === 0) {
+      return `<html><body style="background:#fff;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;color:#888;">No JavaScript files found. Generate code to see a preview.</body></html>`;
+    }
 
-    // Strip out imports and exports for standalone execution
-    let executableJs = jsFile
-      .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
-      .replace(/export\s+default\s+\w+;?/g, '')
-      .replace(/export\s+/g, '');
+    // Find the main file (App.js, Main.js, or the first JS file)
+    const mainFile = jsFiles.find(f => f.name === 'App.js' || f.name === 'Main.js' || f.name === 'index.js') || jsFiles[0];
+    const otherJsFiles = jsFiles.filter(f => f !== mainFile);
 
-    // Try to guess the main component name (fallback to 'Main' or 'App')
+    const processJs = (content) => {
+      if (!content) return '';
+      return content
+        .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
+        .replace(/export\s+default\s+\w+;?/g, '')
+        .replace(/export\s+/g, '');
+    };
+
+    let executableJs = processJs(mainFile?.content || '');
+    let helperJs = otherJsFiles.map(f => processJs(f.content)).join('\n');
+
+    // Try to guess the main component name
     let mainComponent = 'Main';
     const funcMatch = executableJs.match(/function\s+([A-Z]\w*)/);
     const constMatch = executableJs.match(/const\s+([A-Z]\w*)\s*=\s*(?:=>|function|\()/);
@@ -228,24 +242,40 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
       <!DOCTYPE html>
       <html>
         <head>
+          <meta charset="UTF-8" />
           <style>
-            body { font-family: sans-serif; background: #fff; color: #333; margin: 0; padding: 0; }
-            ${cssFile}
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #fff; color: #333; margin: 0; padding: 0; }
+            ${cssFiles}
           </style>
-          <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-          <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+          <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+          <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
           <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
         </head>
         <body>
           <div id="root"></div>
           <script type="text/babel">
+            // Helper components and functions
+            ${helperJs}
+
+            // Main component
             ${executableJs}
             
             try {
               const root = ReactDOM.createRoot(document.getElementById('root'));
-              root.render(<${mainComponent} />);
+              if (typeof ${mainComponent} !== 'undefined') {
+                root.render(<${mainComponent} />);
+              } else {
+                // Fallback if component detection fails but code exists
+                const components = Object.keys(window).filter(key => /^[A-Z]/.test(key) && typeof window[key] === 'function');
+                if (components.length > 0) {
+                   root.render(React.createElement(window[components[0]]));
+                } else {
+                   root.render(<div style={{padding: '20px'}}>Ready for preview. No main component detected.</div>);
+                }
+              }
             } catch(e) {
-              document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;font-family:monospace;">Error rendering preview:<br/>' + e.message + '</div>';
+              console.error(e);
+              document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;font-family:monospace;"><b>Runtime Error:</b><br/>' + e.message + '</div>';
             }
           </script>
         </body>
@@ -516,12 +546,13 @@ const CodeWorkspace = ({ blueprint, onClose, onUpdateBlueprint }) => {
                  <Eye size={10} /> http://localhost:3000
                </div>
              </div>
-             <div style={{ paddingTop: '36px', color: '#000', height: '100%', overflowY: 'auto' }}>
+             <div style={{ paddingTop: '36px', color: '#000', height: '100%', overflowY: 'auto', background: '#fff' }}>
                <iframe 
+                 key={previewKey}
                  srcDoc={generatePreviewHtml()} 
                  style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
                  title="Live Preview"
-                 sandbox="allow-scripts"
+                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
                />
              </div>
           </Panel>
